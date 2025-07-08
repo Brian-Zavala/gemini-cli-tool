@@ -1,4 +1,5 @@
 import os
+from config import max_chars
 
 def get_files_info(working_dir, directory=None):
    
@@ -36,3 +37,13 @@ def get_files_info(working_dir, directory=None):
         return "\n".join(file_content) 
     except Exception as e:
         return f"Error: {str(e)}"
+    
+def get_file_content(working_directory, file_path):
+    working_abs_path = os.path.abspath(working_directory) 
+    full_path = os.path.join(working_directory, file_path)
+    target_abs_path = os.path.abspath(full_path)
+    if not target_abs_path.startswith(working_abs_path):
+        return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
+    if not os.path.isfile(target_abs_path):
+         return f'Error: File not found or is not a regular file: "{file_path}"'
+    
